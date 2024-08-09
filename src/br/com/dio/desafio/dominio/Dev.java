@@ -6,6 +6,7 @@ public class Dev {
     private String nome;
     private Set<Conteudo> conteudosInscritos = new LinkedHashSet<>();
     private Set<Conteudo> conteudosConcluidos = new LinkedHashSet<>();
+    private Set<CertificadoConclusao> certificadosConclusao = new LinkedHashSet<>();
 
     public void inscreverBootcamp(Bootcamp bootcamp){
         this.conteudosInscritos.addAll(bootcamp.getConteudos());
@@ -17,6 +18,7 @@ public class Dev {
         if(conteudo.isPresent()) {
             this.conteudosConcluidos.add(conteudo.get());
             this.conteudosInscritos.remove(conteudo.get());
+            this.certificadosConclusao.add(conteudo.get().gerarCertificadoConclusao(this));
         } else {
             System.err.println("Você não está matriculado em nenhum conteúdo!");
         }
@@ -30,13 +32,22 @@ public class Dev {
             soma += next;
         }
         return soma;
-
-        /*return this.conteudosConcluidos
-                .stream()
-                .mapToDouble(Conteudo::calcularXp)
-                .sum();*/
     }
 
+    public void listarConteudosInscritos() {
+        System.out.printf("%s está inscrito(a) nos conteúdos:%n", this.getNome());
+        this.getConteudosInscritos().forEach(System.out::println);
+    }
+
+    public void listarConteudosConcluidos() {
+        System.out.printf("%s concluiu os conteúdos:%n", this.getNome());
+        this.getConteudosConcluidos().forEach(System.out::println);
+    }
+
+    public void listarCertificadosConclusao() {
+        System.out.printf("%s possui os seguintes Certificados de Conclusão:%n", this.getNome());
+        this.certificadosConclusao.forEach(CertificadoConclusao::imprimirTextoCertificadoConclusao);
+    }
 
     public String getNome() {
         return nome;

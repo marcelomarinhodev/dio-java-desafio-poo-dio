@@ -7,7 +7,19 @@ public abstract class Conteudo {
     private String titulo;
     private String descricao;
 
+    public Conteudo(String titulo, String descricao) {
+        this.titulo = titulo;
+        this.descricao = descricao;
+    }
+
     public abstract double calcularXp();
+
+    public CertificadoConclusao gerarCertificadoConclusao(Dev dev) {
+        if (this instanceof Curso) {
+            return new CertificadoConclusaoCurso(this, dev);
+        }
+        return new CertificadoConclusaoMentoria(this, dev);
+    }
 
     public String getTitulo() {
         return titulo;
